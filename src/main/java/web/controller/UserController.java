@@ -8,10 +8,11 @@ import web.model.User;
 import web.service.UserService;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
-    @Autowired
+//    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -21,13 +22,13 @@ public class UserController {
 //        this.userDAO = userDAO;
 //    }
 
-    @GetMapping()
+    @GetMapping
     public String start(){
         System.out.println(userService.getAllUsers());
         return "user/start";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/get")
     public String getAllUsers(Model model){
         model.addAttribute("allUsers", userService.getAllUsers());
         return "user/showUsers";
@@ -37,26 +38,26 @@ public class UserController {
 //        model.addAttribute("user", new User());
         return "user/addUser";
     }
-    @PostMapping("/users")
+    @PostMapping("/get")
     public String create(@ModelAttribute("user") User user){
 //        user.setId(2);
         userService.createUser(user);
-        return "redirect:/users";
+        return "redirect:/users/get";
     }
-    @PostMapping("/users/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id){
         userService.delete(id);
-        return "redirect:/users";
+        return "redirect:/users/get";
     }
-    @GetMapping("/users/update/{id}")
+    @GetMapping("/update/{id}")
     public String update(@PathVariable("id") int id, Model model){
         model.addAttribute(userService.get(id));
         return "user/updateUser";
     }
 
-    @PostMapping("/users/update/{id}")
+    @PostMapping("/update/{id}")
     public String update_2(@PathVariable("id") int id, User user){
         userService.update(id, user);
-        return "redirect:/users";
+        return "redirect:/users/get";
     }
 }
